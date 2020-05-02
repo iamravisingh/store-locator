@@ -4,15 +4,21 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 
-// load env vars
+/**
+ * load env vars
+ */
 dotenv.config({ path: './config/config.env' });
 
-// Connect to database
+/**
+ * Connect to database
+ */
 connectDB();
 
 const app = express();
 
-// Body parser
+/**
+ * Body parser
+ */
 app.use(express.json());
 
 // Enable cors
