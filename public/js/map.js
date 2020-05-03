@@ -4,16 +4,17 @@ const map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v11',
   zoom: 9,
-  center: [75.7139,19.7515]
+  center: [74.1240,15.2993]
   // center: [-71.157895, 42.707741]
 });
-
+let addressCoordinate;
 // Fetch stores from API
 const getStores = async () => {
   const res = await fetch('/api/v1/stores');
   const data = await res.json();
   const addedStoreId = localStorage.getItem('coordinatesId')
   let currentCoordinates = data.data.find(item => item.storeId == addedStoreId ? item.location.coordinates : null)
+  addressCoordinate = currentCoordinates ? currentCoordinates.location.coordinates : null;
   console.log('addedStoreId>>>>>>>>>', currentCoordinates, addedStoreId);
   localStorage.removeItem('coordinatesId');
   const stores = data.data.map(store => {
@@ -68,7 +69,8 @@ const loadMap = (stores,currentCoordinates) => {
     // requires wrapping all the coordinates with the extend method.
     var bounds = currentCoordinates.reduce((bounds, coord) => {
     return bounds.extend(coord);
-    }, new mapboxgl.LngLatBounds(currentCoordinates, currentCoordinates));
+    }, new mapboxgl.LngLatBounds(addressCoordinate, addressCoordinate));
+    // }, new mapboxgl.LngLatBounds(currentCoordinates, currentCoordinates));
     console.log('inside map zoom >>>>>>>>>>>>>', coordinates[0], coordinates[0],currentCoordinates,bounds);
     map.fitBounds(bounds, {
     padding: 20
