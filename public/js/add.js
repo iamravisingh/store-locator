@@ -14,6 +14,8 @@ const storeAddress = document.getElementById('store-address');
     storeId: storeId.value,
     address: storeAddress.value
   };
+   
+   localStorage.setItem('coordinatesId', sendBody.storeId);
 
   try {
     const res = await fetch('/api/v1/stores', {
